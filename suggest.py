@@ -26,10 +26,12 @@ while True:
     candidate_hash = git_hash(candidate)
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
+        if time.time() < start_time + 2:
+            continue
         print "%i\t (%s)" % (counter, candidate_hash)
         # Save the new hash into git's object store
         saved_hash = git_update(candidate).strip()
-        if saved_hash != candidate_hash and time.time() > start_time + 2:
+        if saved_hash != candidate_hash:
             print "Error saving object to git"
             exit(1)
         # Move our HEAD to the new commit
