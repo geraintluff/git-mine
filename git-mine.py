@@ -6,7 +6,7 @@ import signal
 import sys
 from subprocess import check_output, Popen, PIPE
 
-print "Mining commits:"
+print "Mining commit:"
 
 def graceful_exit(signal, frame):
     print "\tdone";
