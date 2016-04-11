@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import hashlib
+import time
 from subprocess import check_output, Popen, PIPE
 
 def git_hash(object_data):
@@ -18,11 +19,12 @@ object_data = check_output(['git', 'cat-file', '-p', head_id])
 
 best_hash = head_id;
 counter = 0;
+start_time = time.time()
 
 while True:
     candidate = object_data + str(counter) + '\n'
     candidate_hash = git_hash(candidate)
-    if not best_hash or candidate_hash < best_hash:
+    if (not best_hash or candidate_hash < best_hash) and time.time() > start_time + 1:
         best_hash = candidate_hash
         print "%i\t (%s)" % (counter, candidate_hash)
         # Save the new hash into git's object store
@@ -31,5 +33,5 @@ while True:
             print "Error saving object to git"
             exit(1)
         # Move our HEAD to the new commit
-        call(['git', 'reset', '--soft', saved_hash]);
+        check_output(['git', 'reset', '--soft', saved_hash]);
     counter += 1
