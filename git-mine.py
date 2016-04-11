@@ -8,6 +8,8 @@ from subprocess import check_output, Popen, PIPE
 
 print "Mining commit:"
 
+DEFAULT_LIMIT = '0001'
+
 def graceful_exit(signal, frame):
     print "\tdone";
     sys.exit(0);
@@ -44,7 +46,7 @@ if not ('\n\n' in object_data):
 best_hash = head_id;
 counter = 0;
 start_time = time.time()
-hash_limit = '0001'
+hash_limit = DEFAULT_LIMIT
 if len(sys.argv) > 1:
     hash_limit = sys.argv[1]
 
