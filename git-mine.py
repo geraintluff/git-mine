@@ -41,7 +41,7 @@ head_id = check_output(['git', 'rev-parse', 'HEAD']).strip()
 object_data = check_output(['git', 'cat-file', '-p', head_id]).strip()
 if not ('\n\n' in object_data):
     ## Message is missing
-    object_data += '\n\n'
+    object_data += '\n'
 
 best_hash = head_id;
 counter = 0;
@@ -51,7 +51,7 @@ if len(sys.argv) > 1:
     hash_limit = sys.argv[1]
 
 while not hash_limit or best_hash >= hash_limit:
-    candidate = "%s (%s)\n" % (object_data, id_for_counter(counter))
+    candidate = "%s\n(%s)\n" % (object_data, id_for_counter(counter))
     candidate_hash = git_hash(candidate)
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
