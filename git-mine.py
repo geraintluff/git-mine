@@ -44,7 +44,7 @@ if not ('\n\n' in object_data):
 best_hash = head_id;
 counter = 0;
 start_time = time.time()
-hash_limit = '00001'
+hash_limit = '0001'
 if len(sys.argv) > 1:
     hash_limit = sys.argv[1]
 
