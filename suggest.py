@@ -29,7 +29,7 @@ counter = 0;
 start_time = time.time()
 
 while True:
-    candidate = "%s (%d)\n" % (object_data, str(counter))
+    candidate = "%s (%d)\n" % (object_data, counter)
     candidate_hash = git_hash(candidate)
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
