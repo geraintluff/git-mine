@@ -1,6 +1,6 @@
 # git-mine
 
-Python script that amends Git's current HEAD to minimise
+Python script that amends Git's current HEAD to minimise the commit ID
 
 ## Usage:
 
