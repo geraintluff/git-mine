@@ -26,3 +26,5 @@ If you want to specify a limit other than the default, you can write a script fo
 #!/bin/bash
 /location/to/git-mine.py 0001
 ```
+
+Alternatively, you could just change `DEFAULT_LIMIT` in the source.
