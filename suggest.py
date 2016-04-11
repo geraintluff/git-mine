@@ -2,7 +2,14 @@
 
 import hashlib
 import time
+import signal
 from subprocess import check_output, Popen, PIPE
+
+# exit quietly on CTRL+C
+def graceful_exit(signal, frame):
+    print "";
+    exit(0);
+signal.signal(signal.SIGINT, graceful_exit)
 
 def git_hash(object_data):
     hash = hashlib.sha1()
@@ -22,7 +29,7 @@ counter = 0;
 start_time = time.time()
 
 while True:
-    candidate = object_data + str(counter) + '\n'
+    candidate = "%s (%d)\n" % (object_data, str(counter))
     candidate_hash = git_hash(candidate)
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
