@@ -20,7 +20,7 @@ The limit is a lexical comparison on the hex representation - to continue infini
 
 You can add a post-commit hook in git that calls this with a preset limit, to make sure that all your commits stay below a certain threshhold.
 
-To do this, create the (executable) file `.git/hooks/post-commit` with contents
+To do this, create the script `.git/hooks/post-commit` (must be executable) with the contents:
 
 ```
 #!/bin/bash
