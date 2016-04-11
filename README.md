@@ -13,3 +13,11 @@ The only (optional) argument is the limit (in hex) below which the tool will exi
 This will exit when the commit ID for HEAD starts `000000...`
 
 If the limit is omitted, then it will mine until it is interrupted (CTRL+C).
+
+## Use as `post-commit` hook
+
+You can add a post-commit hook in git that calls this with a given limit e.g.
+
+```
+echo "/location/to/git-mine.py 0001" > ./git/hooks/post-commit
+```
