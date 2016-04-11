@@ -3,12 +3,13 @@
 import hashlib
 import time
 import signal
+import sys
 from subprocess import check_output, Popen, PIPE
 
 # exit quietly on CTRL+C
 def graceful_exit(signal, frame):
     print "";
-    exit(0);
+    sys.exit(0);
 signal.signal(signal.SIGINT, graceful_exit)
 
 def git_hash(object_data):
@@ -27,6 +28,9 @@ object_data = check_output(['git', 'cat-file', '-p', head_id])
 best_hash = head_id;
 counter = 0;
 start_time = time.time()
+hash_limit = False
+if len(sys.argv) > 1:
+    hash_limit = sys.argv[1]
 
 while True:
     candidate = "%s (%d)\n" % (object_data, counter)
@@ -43,4 +47,6 @@ while True:
             exit(1)
         # Move our HEAD to the new commit
         check_output(['git', 'reset', '--soft', saved_hash]);
+        if hash_limit and best_hash < hash_limit:
+            graceful_exit()
     counter += 1
