@@ -56,8 +56,11 @@ while not hash_limit or best_hash >= hash_limit:
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
         hash_limit_reached = (hash_limit and best_hash < hash_limit);
+
+        # Don't bother with initial discoveries unless we've reached the limit
         if time.time() < start_time + 0.5 and not hash_limit_reached:
             continue
+
         saved_hash = git_update(candidate)
         if saved_hash != candidate_hash:
             print "Error saving object to git"
