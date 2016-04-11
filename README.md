@@ -1,6 +1,6 @@
 # git-mine
 
-Python script that amends Git's current HEAD to minimise the commit ID
+Python script that amends Git's current HEAD to minimise the commit ID.
 
 ## Usage:
 
@@ -12,7 +12,7 @@ The only argument is the limit (in hex) below which the tool will exit.
 
 This will exit when the commit ID for HEAD starts `000000...`
 
-If the limit is omitted, then it defaults to `0001` (first 16 bytes zeros).
+If the limit is omitted, then it defaults to `0001` (first 16 bits zeros).
 
 The limit is a lexical comparison on the hex representation - to continue infinitely, specify `-` as the limit.
 
