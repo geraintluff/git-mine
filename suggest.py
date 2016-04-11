@@ -6,9 +6,11 @@ import signal
 import sys
 from subprocess import check_output, Popen, PIPE
 
+print "Mining commits:"
+
 # exit quietly on CTRL+C
 def graceful_exit(signal, frame):
-    print "";
+    print "\tdone";
     sys.exit(0);
 signal.signal(signal.SIGINT, graceful_exit)
 
@@ -31,22 +33,25 @@ start_time = time.time()
 hash_limit = False
 if len(sys.argv) > 1:
     hash_limit = sys.argv[1]
+if hash_limit and best_hash < hash_limit:
+    graceful_exit(None, None)
 
 while True:
     candidate = "%s (%d)\n" % (object_data, counter)
     candidate_hash = git_hash(candidate)
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
-        if time.time() < start_time + 0.5:
+        hash_limit_reached = (hash_limit and best_hash < hash_limit);
+        if time.time() < start_time + 0.5 and not hash_limit_reached:
             continue
-        print "%i\t (%s)" % (counter, candidate_hash)
         # Save the new hash into git's object store
         saved_hash = git_update(candidate).strip()
         if saved_hash != candidate_hash:
             print "Error saving object to git"
             exit(1)
         # Move our HEAD to the new commit
+        print "\t%i\t (%s)" % (counter, candidate_hash)
         check_output(['git', 'reset', '--soft', saved_hash]);
-        if hash_limit and best_hash < hash_limit:
-            graceful_exit()
+        if hash_limit_reached:
+            graceful_exit(None, None)
     counter += 1
