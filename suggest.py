@@ -26,7 +26,7 @@ while True:
     candidate_hash = git_hash(candidate)
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
-        if time.time() < start_time + 2:
+        if time.time() < start_time + 0.5:
             continue
         print "%i\t (%s)" % (counter, candidate_hash)
         # Save the new hash into git's object store
