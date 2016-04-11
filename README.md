@@ -26,3 +26,5 @@ To do this, create the script `.git/hooks/post-commit` (must be executable) with
 #!/bin/bash
 /location/to/git-mine.py 0001
 ```
+
+test
