@@ -18,7 +18,7 @@ The limit is a lexical comparison on the hex representation - to continue infini
 
 ## Use as `post-commit` hook
 
-If you'd like this script to run after every commit, copy `git-mine.py` into the file `.git/hooks/post-commit`.  It must be an executable file.
+If you'd like this script to run after every commit, copy `git-mine.py` into the file `.git/hooks/post-commit`.  It must be marked as executable.
 
 If you want to specify a limit other than the default, you can write a script for `.git/hooks/post-commit` (must be executable) that provides it:
 
