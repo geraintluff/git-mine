@@ -41,7 +41,7 @@ object_data = check_output(['git', 'cat-file', '-p', head_id])
 best_hash = head_id;
 counter = 0;
 start_time = time.time()
-hash_limit = False
+hash_limit = '0001'
 if len(sys.argv) > 1:
     hash_limit = sys.argv[1]
 

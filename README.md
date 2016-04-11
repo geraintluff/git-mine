@@ -4,7 +4,7 @@ Python script that amends Git's current HEAD to minimise
 
 ## Usage:
 
-The only (optional) argument is the limit (in hex) below which the tool will exit.
+The only argument is the limit (in hex) below which the tool will exit.
 
 ```
 ./git-mine.py 000001
@@ -12,7 +12,9 @@ The only (optional) argument is the limit (in hex) below which the tool will exi
 
 This will exit when the commit ID for HEAD starts `000000...`
 
-If the limit is omitted, then it will mine until it is interrupted (CTRL+C).
+If the limit is omitted, then it defaults to `0001` (first 16 bytes zeros).
+
+The limit is a lexical comparison on the hex representation - to continue infinitely, specify `-` as the limit.
 
 ## Use as `post-commit` hook
 
