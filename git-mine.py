@@ -37,7 +37,7 @@ if len(sys.argv) > 1:
     hash_limit = sys.argv[1]
 
 while not hash_limit or best_hash >= hash_limit:
-    candidate = "%s (%d)\n" % (object_data, counter)
+    candidate = "%s (%d)\n" % (object_data.strip(), counter)
     candidate_hash = git_hash(candidate)
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
