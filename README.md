@@ -19,5 +19,8 @@ If the limit is omitted, then it will mine until it is interrupted (CTRL+C).
 You can add a post-commit hook in git that calls this with a given limit e.g.
 
 ```
-echo "/location/to/git-mine.py 0001" > ./git/hooks/post-commit
+#!/bin/bash
+/location/to/git-mine.py 0001
 ```
+
+This should be an executable file placed in `.git/hooks/post-commit`.
