@@ -16,7 +16,7 @@ If the limit is omitted, then it will mine until it is interrupted (CTRL+C).
 
 ## Use as `post-commit` hook
 
-You can add a post-commit hook in git that calls this with a given limit e.g.
+You can add a post-commit hook in git that calls this with a preset limit, to make sure that all your commits stay below a certain threshhold:
 
 ```
 #!/bin/bash
