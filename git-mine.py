@@ -30,8 +30,9 @@ def git_update(object_data):
 
 head_id = check_output(['git', 'rev-parse', 'HEAD']).strip()
 object_data = check_output(['git', 'cat-file', '-p', head_id])
-if '\n\n' not in object_data:
-    object_data += '\n\n';
+object_data_parts = object_data.split('\n\n', 1)
+object_data_prefix = object_data_parts[0]
+object_data_suffix = object_data_parts[1]
 
 best_hash = head_id;
 counter = 0;
@@ -41,7 +42,7 @@ if len(sys.argv) > 1:
     hash_limit = sys.argv[1]
 
 while not hash_limit or best_hash >= hash_limit:
-    candidate = object_data.replace('\n\n', '\nnonce %d\n\n' % counter, 1)
+    candidate = "%s\nnonce %d\n\n%s" % (object_data_prefix, counter, object_data_suffix)
     candidate_hash = git_hash(candidate)
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
