@@ -28,17 +28,10 @@ def git_update(object_data):
     git_pipe = Popen(['git', 'hash-object', '-t', 'commit', '--stdin', '-w'], stdin=PIPE, stdout=PIPE);
     return git_pipe.communicate(input=object_data)[0].strip();
 
-def id_for_counter(counter):
-    # No numbers, so can't accidentally look like a git commit ID
-    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    counter_string = '';
-    while counter:
-        counter_string += chars[counter%len(chars)]
-        counter = counter//len(chars)
-    return counter_string
-
 head_id = check_output(['git', 'rev-parse', 'HEAD']).strip()
 object_data = check_output(['git', 'cat-file', '-p', head_id])
+if '\n\n' not in object_data:
+    object_data += '\n\n';
 
 best_hash = head_id;
 counter = 0;
@@ -48,7 +41,7 @@ if len(sys.argv) > 1:
     hash_limit = sys.argv[1]
 
 while not hash_limit or best_hash >= hash_limit:
-    candidate = object_data.replace('\n\n', '\nnonce ' + id_for_counter(counter) + '\n\n', 1)
+    candidate = object_data.replace('\n\n', '\nnonce %d\n\n' % counter, 1)
     candidate_hash = git_hash(candidate)
     if (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
@@ -63,6 +56,6 @@ while not hash_limit or best_hash >= hash_limit:
             print "Error saving object to git"
             exit(1)
         # Move our HEAD to the new commit
-        print "\t%s\t (%s)" % (id_for_counter(counter), candidate_hash)
+        print "\t%d\t (%s)" % (counter, candidate_hash)
         check_output(['git', 'reset', '--soft', saved_hash]);
     counter += 1
