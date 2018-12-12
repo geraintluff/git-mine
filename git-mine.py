@@ -4,11 +4,13 @@ import hashlib
 import time
 import signal
 import sys
+import re
 from subprocess import check_output, Popen, PIPE
 
 print "Mining commit:"
 
 DEFAULT_LIMIT = '0001'
+DEFAULT_LOWER_LIMIT = '0'
 
 def graceful_exit(signal, frame):
     print "\tdone";
@@ -31,20 +33,25 @@ def git_update(object_data):
 head_id = check_output(['git', 'rev-parse', 'HEAD']).strip()
 object_data = check_output(['git', 'cat-file', '-p', head_id])
 object_data_parts = object_data.split('\n\n', 1)
-object_data_prefix = object_data_parts[0]
+object_data_prefix = re.sub('\nnonce [^\n]+', '', object_data_parts[0]);
 object_data_suffix = object_data_parts[1]
 
 best_hash = head_id;
 counter = 0;
 start_time = time.time()
 hash_limit = DEFAULT_LIMIT
+hash_lower_limit = DEFAULT_LOWER_LIMIT
 if len(sys.argv) > 1:
     hash_limit = sys.argv[1]
-
+if len(sys.argv) > 2:
+    hash_lower_limit = sys.argv[2]
+if best_hash < hash_lower_limit:
+    best_hash = 'f'*40;
+    
 while not hash_limit or best_hash >= hash_limit:
     candidate = "%s\nnonce %d\n\n%s" % (object_data_prefix, counter, object_data_suffix)
     candidate_hash = git_hash(candidate)
-    if (not best_hash or candidate_hash < best_hash):
+    if candidate_hash >= hash_lower_limit and (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
         hash_limit_reached = (hash_limit and best_hash < hash_limit);
 
