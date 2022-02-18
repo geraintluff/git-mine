@@ -33,7 +33,9 @@ def git_update(object_data):
 head_id = check_output(['git', 'rev-parse', 'HEAD']).strip()
 object_data = check_output(['git', 'cat-file', '-p', head_id])
 object_data_parts = object_data.split('\n\n', 1)
-object_data_prefix = re.sub('\nnonce [^\n]+', '', object_data_parts[0]);
+object_data_prefix = object_data_parts[0];
+object_data_prefix = re.sub('\nnonce [^\n]+', '', object_data_prefix);
+object_data_prefix = re.sub('\nmine [^\n]+', '', object_data_prefix);
 object_data_suffix = object_data_parts[1]
 
 best_hash = head_id;
@@ -49,7 +51,7 @@ if best_hash < hash_lower_limit:
     best_hash = 'f'*40;
     
 while not hash_limit or best_hash >= hash_limit:
-    candidate = "%s\nnonce %d\n\n%s" % (object_data_prefix, counter, object_data_suffix)
+    candidate = "%s\nmine %d\n\n%s" % (object_data_prefix, counter, object_data_suffix)
     candidate_hash = git_hash(candidate)
     if candidate_hash >= hash_lower_limit and (not best_hash or candidate_hash < best_hash):
         best_hash = candidate_hash
