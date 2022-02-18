@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Edits the raw commit using your default text editor
+
+git cat-file -p $(git rev-parse HEAD) > .GIT_RAW_COMMIT
+$EDITOR .GIT_RAW_COMMIT
+commit_hash=$(git hash-object -t commit -w .GIT_RAW_COMMIT)
+git reset --soft $commit_hash
+rm .GIT_RAW_COMMIT
